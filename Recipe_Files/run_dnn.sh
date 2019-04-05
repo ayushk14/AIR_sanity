@@ -73,7 +73,7 @@ if [ $stage -le 2 ]; then
     steps/nnet/train.sh --feature-transform $feature_transform --dbn $dbn --hid-layers 0 --learn-rate 0.008 \
     $data_fmllr/train_tr90 $data_fmllr/train_cv10 data/lang $ali $ali $dir || exit 1;
   # Decode (reuse HCLG graph)
-  steps/nnet/decode.sh --nj 2 --cmd "$decode_cmd" --acwt 0.2 \
+  steps/nnet/decode.sh --nj 5 --cmd "$decode_cmd" --acwt 0.2 \
     $gmmdir/graph $data_fmllr/test $dir/decode_test || exit 1;
   #steps/nnet/decode.sh --nj 20 --cmd "$decode_cmd" --acwt 0.2 \
   #  $gmmdir/graph $data_fmllr/dev $dir/decode_dev || exit 1;
@@ -105,7 +105,7 @@ if [ $stage -le 4 ]; then
     $data_fmllr/train data/lang $srcdir ${srcdir}_ali ${srcdir}_denlats $dir || exit 1
   # Decode
   for ITER in 1 6; do
-    steps/nnet/decode.sh --nj 2 --cmd "$decode_cmd" \
+    steps/nnet/decode.sh --nj 5 --cmd "$decode_cmd" \
       --nnet $dir/${ITER}.nnet --acwt $acwt \
       $gmmdir/graph $data_fmllr/test $dir/decode_test_it${ITER} || exit 1
     #steps/nnet/decode.sh --nj 20 --cmd "$decode_cmd" \
